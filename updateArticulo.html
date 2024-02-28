@@ -33,9 +33,9 @@
                         body: JSON.stringify({ imagen1: binario })
                     });
                     const data = await response.json();
-                    console.log(data.message);
+                    alert(data.message);
                 } catch (error) {
-                    console.error('Error al enviar la imagen al servidor:', error);
+                    alert('Error al enviar la imagen al servidor:', error);
                 }
             };
             reader.readAsDataURL(file);
