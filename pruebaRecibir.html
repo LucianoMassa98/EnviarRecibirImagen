@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Imagen</title>
+</head>
+<body>
+    <div id="imagen-container"></div>
+
+    <script>
+
+        // Realizar una solicitud GET para obtener la imagen en formato base64
+        fetch('https://ecommerce-suinfi-production.up.railway.app/api/v1/perfil/findOne/1', {
+            method: 'GET',
+        })
+        .then(response => response.json()) // Convertir la respuesta a JSON
+        .then(data => {
+           
+            // Convertir los datos de Buffer a ArrayBuffer
+            const arrayBuffer = new Uint8Array(data.imagen.data).buffer;
+
+            // Convertir el ArrayBuffer a Uint8Array
+            const uint8Array = new Uint8Array(arrayBuffer);
+
+            // Convertir los datos binarios en una cadena base64
+            let binaryString = '';
+            uint8Array.forEach(byte => {
+                binaryString += String.fromCharCode(byte);
+            });
+            const base64Data = btoa(binaryString);
+           
+            const dataUrl = `data:image/png;base64,${base64Data}`;
+
+            // Crear un elemento de imagen y establecer su atributo src con la imagen en base64
+            const img = document.createElement('img');
+            img.src = dataUrl;
+            // Agregar la imagen al contenedor en el DOM
+            document.getElementById('imagen-container').appendChild(img);
+        })
+        .catch(error => {
+            console.error('Error al obtener la imagen:', error);
+        });
+    </script>
+</body>
+</html>
